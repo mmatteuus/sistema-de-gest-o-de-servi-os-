@@ -10,16 +10,147 @@
         .sidebar-transition {
             transition: transform 0.3s ease-in-out;
         }
-        .card-hover:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        .card-hover:hov    <style>
+        .sidebar-transition {
+            transition: transform 0.3s ease-in-out;
         }
+        
         .gradient-bg {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-    </style>
-</head>
-<body class="bg-gray-50">
+        
+        /* Variáveis CSS para cores personalizáveis */
+        :root {
+            --accent-primary: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #dbeafe;
+        }
+        
+        /* Tema Escuro */
+        .dark-theme {
+            background-color: #1f2937 !important;
+            color: #f9fafb !important;
+        }
+        
+        .dark-theme .bg-white {
+            background-color: #374151 !important;
+            color: #f9fafb !important;
+        }
+        
+        .dark-theme .text-gray-800 {
+            color: #f9fafb !important;
+        }
+        
+        .dark-theme .text-gray-600 {
+            color: #d1d5db !important;
+        }
+        
+        .dark-theme .text-gray-700 {
+            color: #e5e7eb !important;
+        }
+        
+        .dark-theme .border-gray-200 {
+            border-color: #4b5563 !important;
+        }
+        
+        .dark-theme .border-gray-300 {
+            border-color: #6b7280 !important;
+        }
+        
+        .dark-theme input, 
+        .dark-theme textarea, 
+        .dark-theme select {
+            background-color: #4b5563 !important;
+            color: #f9fafb !important;
+            border-color: #6b7280 !important;
+        }
+        
+        .dark-theme input:focus,
+        .dark-theme textarea:focus,
+        .dark-theme select:focus {
+            border-color: var(--accent-primary) !important;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2) !important;
+        }
+        
+        .dark-sidebar {
+            background-color: #111827 !important;
+        }
+        
+        .dark-sidebar .text-gray-700 {
+            color: #d1d5db !important;
+        }
+        
+        .dark-sidebar .hover\\:bg-blue-50:hover {
+            background-color: #374151 !important;
+        }
+        
+        .dark-sidebar .hover\\:text-blue-600:hover {
+            color: var(--accent-primary) !important;
+        }
+        
+        /* Botões com cor personalizável */
+        .bg-blue-600 {
+            background-color: var(--accent-primary) !important;
+        }
+        
+        .hover\\:bg-blue-700:hover {
+            background-color: var(--accent-hover) !important;
+        }
+        
+        .text-blue-600 {
+            color: var(--accent-primary) !important;
+        }
+        
+        .border-blue-500 {
+            border-color: var(--accent-primary) !important;
+        }
+        
+        .bg-blue-50 {
+            background-color: var(--accent-light) !important;
+        }
+        
+        /* Transições suaves */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        /* Animações para seções */
+        .section {
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        /* Melhorias de UX */
+        .hover-scale:hover {
+            transform: scale(1.02);
+            transition: transform 0.2s ease;
+        }
+        
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .card-shadow:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style></head>
+<body class="bg-gray-50 transition-colors duration-300" id="app-body">
     <!-- Sidebar -->
     <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg sidebar-transition transform -translate-x-full lg:translate-x-0">
         <div class="flex items-center justify-center h-16 bg-blue-600">
@@ -45,10 +176,30 @@
                 <i class="fas fa-clipboard-list mr-3"></i>
                 Ordens de Serviço
             </a>
+            <a href="#" onclick="showSection('documentos')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                <i class="fas fa-file-invoice mr-3"></i>
+                Documentos
+            </a>
             <a href="#" onclick="showSection('consulta-publica')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
                 <i class="fas fa-search mr-3"></i>
                 Consulta Pública
             </a>
+            
+            <!-- Configurações -->
+            <div class="mt-8 pt-4 border-t border-gray-200">
+                <a href="#" onclick="showSection('configuracoes')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                    <i class="fas fa-cog mr-3"></i>
+                    Configurações
+                </a>
+                
+                <!-- Botão de Tema -->
+                <div class="px-6 py-3">
+                    <button onclick="toggleTheme()" class="flex items-center w-full text-gray-700 hover:text-blue-600 transition-colors">
+                        <i id="theme-icon" class="fas fa-moon mr-3"></i>
+                        <span id="theme-text">Tema Escuro</span>
+                    </button>
+                </div>
+            </div>
         </nav>
     </div>
 
@@ -204,6 +355,132 @@
                         </form>
                         <div id="resultado-consulta" class="mt-6 hidden">
                             <!-- Resultado da consulta -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documentos Section -->
+            <div id="documentos-section" class="section hidden">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Documentos</h2>
+                    <p class="text-gray-600 mt-2">Gere prestações de serviço e vendas de produtos</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-file-invoice text-blue-600 text-2xl mr-3"></i>
+                            <h3 class="text-lg font-semibold text-gray-800">Prestação de Serviço</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Gere documentos de prestação de serviço para seus clientes</p>
+                        <button onclick="abrirModalPrestacaoServico()" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-plus mr-2"></i>Nova Prestação
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-shopping-cart text-green-600 text-2xl mr-3"></i>
+                            <h3 class="text-lg font-semibold text-gray-800">Venda de Produto</h3>
+                        </div>
+                        <p class="text-gray-600 mb-4">Gere documentos de venda de produtos para seus clientes</p>
+                        <button onclick="abrirModalVendaProduto()" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors">
+                            <i class="fas fa-plus mr-2"></i>Nova Venda
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lista de Documentos Gerados -->
+                <div class="bg-white rounded-lg shadow-sm">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-800">Documentos Gerados</h3>
+                    </div>
+                    <div class="p-6">
+                        <div id="lista-documentos">
+                            <p class="text-gray-500 text-center py-8">Nenhum documento gerado ainda</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configurações Section -->
+            <div id="configuracoes-section" class="section hidden">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Configurações</h2>
+                    <p class="text-gray-600 mt-2">Personalize a aparência e comportamento do sistema</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Configurações de Tema -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                            <i class="fas fa-palette mr-2"></i>Aparência
+                        </h3>
+                        
+                        <!-- Seletor de Tema -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Tema</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="setTheme('light')" id="theme-light-btn" class="theme-option flex items-center justify-center p-3 border-2 border-gray-200 rounded-lg hover:border-blue-500 transition-colors">
+                                    <i class="fas fa-sun mr-2"></i>Claro
+                                </button>
+                                <button onclick="setTheme('dark')" id="theme-dark-btn" class="theme-option flex items-center justify-center p-3 border-2 border-gray-200 rounded-lg hover:border-blue-500 transition-colors">
+                                    <i class="fas fa-moon mr-2"></i>Escuro
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Seletor de Cores -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Cor Principal</label>
+                            <div class="grid grid-cols-4 gap-3">
+                                <button onclick="setAccentColor('blue')" class="color-option w-12 h-12 bg-blue-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="blue"></button>
+                                <button onclick="setAccentColor('green')" class="color-option w-12 h-12 bg-green-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="green"></button>
+                                <button onclick="setAccentColor('purple')" class="color-option w-12 h-12 bg-purple-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="purple"></button>
+                                <button onclick="setAccentColor('red')" class="color-option w-12 h-12 bg-red-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="red"></button>
+                                <button onclick="setAccentColor('yellow')" class="color-option w-12 h-12 bg-yellow-500 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="yellow"></button>
+                                <button onclick="setAccentColor('indigo')" class="color-option w-12 h-12 bg-indigo-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="indigo"></button>
+                                <button onclick="setAccentColor('pink')" class="color-option w-12 h-12 bg-pink-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="pink"></button>
+                                <button onclick="setAccentColor('teal')" class="color-option w-12 h-12 bg-teal-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="teal"></button>
+                            </div>
+                        </div>
+
+                        <!-- Preview -->
+                        <div class="p-4 border border-gray-200 rounded-lg">
+                            <h4 class="text-sm font-medium text-gray-700 mb-2">Preview</h4>
+                            <div class="flex items-center space-x-2">
+                                <button class="preview-btn px-3 py-1 bg-blue-600 text-white text-sm rounded">Botão</button>
+                                <div class="preview-card w-16 h-8 bg-white border border-gray-200 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configurações Gerais -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                            <i class="fas fa-cogs mr-2"></i>Configurações Gerais
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Nome da Empresa</label>
+                                <input type="text" id="empresa-nome" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Sua Empresa Ltda">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">CNPJ</label>
+                                <input type="text" id="empresa-cnpj" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="00.000.000/0000-00">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Endereço</label>
+                                <textarea id="empresa-endereco" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Endereço completo da empresa"></textarea>
+                            </div>
+                            
+                            <button onclick="salvarConfiguracoes()" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-save mr-2"></i>Salvar Configurações
+                            </button>
                         </div>
                     </div>
                 </div>
