@@ -1295,3 +1295,215 @@ document.addEventListener('DOMContentLoaded', function() {
     detectarModoOffline();
 });
 
+
+
+// ===== FUNCIONALIDADES AVANÇADAS =====
+
+// Variáveis para controle da sidebar
+let sidebarPinned = localStorage.getItem('sidebarPinned') === 'true';
+
+// Função para aplicar cor personalizada
+function aplicarCorPersonalizada() {
+    const colorInput = document.getElementById('custom-color-input');
+    const colorValue = colorInput.value.trim();
+    
+    // Validar formato de cor hexadecimal
+    const hexColorRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+    
+    if (!hexColorRegex.test(colorValue)) {
+        showNotification('Formato de cor inválido. Use o formato #RRGGBB', 'error');
+        return;
+    }
+    
+    // Aplicar cor personalizada
+    const root = document.documentElement;
+    const primaryColor = colorValue;
+    const hoverColor = adjustBrightness(colorValue, -20);
+    const lightColor = adjustBrightness(colorValue, 80);
+    
+    root.style.setProperty('--accent-primary', primaryColor);
+    root.style.setProperty('--accent-hover', hoverColor);
+    root.style.setProperty('--accent-light', lightColor);
+    
+    // Salvar cor personalizada
+    currentAccentColor = 'custom';
+    localStorage.setItem('accentColor', currentAccentColor);
+    localStorage.setItem('customColor', colorValue);
+    
+    // Atualizar preview
+    const previewBtn = document.querySelector('.preview-btn');
+    if (previewBtn) {
+        previewBtn.style.backgroundColor = primaryColor;
+    }
+    
+    // Remover seleção de outras cores
+    document.querySelectorAll('.color-option').forEach(btn => {
+        btn.classList.remove('border-gray-800', 'border-4');
+    });
+    
+    showNotification('Cor personalizada aplicada com sucesso!', 'success');
+}
+
+// Função para ajustar brilho da cor
+function adjustBrightness(hex, percent) {
+    const num = parseInt(hex.replace("#", ""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = (num >> 16) + amt;
+    const G = (num >> 8 & 0x00FF) + amt;
+    const B = (num & 0x0000FF) + amt;
+    return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+        (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+        (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+}
+
+// Função para alternar fixação da sidebar
+function toggleSidebarPin() {
+    sidebarPinned = !sidebarPinned;
+    localStorage.setItem('sidebarPinned', sidebarPinned.toString());
+    
+    const sidebar = document.getElementById('sidebar');
+    const pinBtn = document.getElementById('sidebar-pin-btn');
+    
+    if (sidebarPinned) {
+        sidebar.classList.add('sidebar-pinned');
+        pinBtn.classList.add('text-blue-300');
+        pinBtn.title = 'Desafixar sidebar';
+        showNotification('Sidebar fixada', 'info');
+    } else {
+        sidebar.classList.remove('sidebar-pinned');
+        pinBtn.classList.remove('text-blue-300');
+        pinBtn.title = 'Fixar sidebar';
+        showNotification('Sidebar desafixada', 'info');
+    }
+}
+
+// Função para atualizar nome da empresa no dashboard
+function atualizarNomeEmpresaDashboard() {
+    const config = JSON.parse(localStorage.getItem('configuracoes') || '{}');
+    const empresaDashboard = document.getElementById('empresa-dashboard');
+    const sidebarTitle = document.getElementById('sidebar-title');
+    
+    if (config.empresaNome && config.empresaNome.trim()) {
+        empresaDashboard.textContent = `- ${config.empresaNome}`;
+        empresaDashboard.style.display = 'inline';
+        
+        // Atualizar título da sidebar também
+        sidebarTitle.textContent = config.empresaNome;
+    } else {
+        empresaDashboard.style.display = 'none';
+        sidebarTitle.textContent = 'Gestão OS';
+    }
+}
+
+// Sobrescrever função salvarConfiguracoes para incluir atualização do nome
+const originalSalvarConfiguracoes = window.salvarConfiguracoes;
+window.salvarConfiguracoes = function() {
+    if (originalSalvarConfiguracoes) {
+        originalSalvarConfiguracoes();
+    } else {
+        const config = {
+            empresaNome: document.getElementById('empresa-nome').value,
+            empresaCnpj: document.getElementById('empresa-cnpj').value,
+            empresaEndereco: document.getElementById('empresa-endereco').value,
+            theme: currentTheme,
+            accentColor: currentAccentColor
+        };
+        
+        localStorage.setItem('configuracoes', JSON.stringify(config));
+        showNotification('Configurações salvas com sucesso!', 'success');
+    }
+    
+    // Atualizar nome da empresa no dashboard
+    atualizarNomeEmpresaDashboard();
+};
+
+// Sobrescrever função loadConfiguracoes para incluir nome da empresa
+const originalLoadConfiguracoes = window.loadConfiguracoes;
+window.loadConfiguracoes = function() {
+    if (originalLoadConfiguracoes) {
+        originalLoadConfiguracoes();
+    }
+    
+    // Carregar e aplicar nome da empresa
+    atualizarNomeEmpresaDashboard();
+    
+    // Carregar cor personalizada se existir
+    const customColor = localStorage.getItem('customColor');
+    if (currentAccentColor === 'custom' && customColor) {
+        const colorInput = document.getElementById('custom-color-input');
+        if (colorInput) {
+            colorInput.value = customColor;
+        }
+    }
+};
+
+// Sobrescrever função applyAccentColor para suportar cores personalizadas
+const originalApplyAccentColor = window.applyAccentColor;
+window.applyAccentColor = function() {
+    if (currentAccentColor === 'custom') {
+        const customColor = localStorage.getItem('customColor');
+        if (customColor) {
+            const root = document.documentElement;
+            const primaryColor = customColor;
+            const hoverColor = adjustBrightness(customColor, -20);
+            const lightColor = adjustBrightness(customColor, 80);
+            
+            root.style.setProperty('--accent-primary', primaryColor);
+            root.style.setProperty('--accent-hover', hoverColor);
+            root.style.setProperty('--accent-light', lightColor);
+            
+            const previewBtn = document.querySelector('.preview-btn');
+            if (previewBtn) {
+                previewBtn.style.backgroundColor = primaryColor;
+            }
+        }
+    } else if (originalApplyAccentColor) {
+        originalApplyAccentColor();
+    }
+};
+
+// Inicializar funcionalidades avançadas
+document.addEventListener('DOMContentLoaded', function() {
+    // Aplicar estado da sidebar fixada
+    if (sidebarPinned) {
+        const sidebar = document.getElementById('sidebar');
+        const pinBtn = document.getElementById('sidebar-pin-btn');
+        if (sidebar && pinBtn) {
+            sidebar.classList.add('sidebar-pinned');
+            pinBtn.classList.add('text-blue-300');
+            pinBtn.title = 'Desafixar sidebar';
+        }
+    }
+    
+    // Carregar nome da empresa
+    setTimeout(() => {
+        atualizarNomeEmpresaDashboard();
+    }, 100);
+    
+    // Aplicar cor personalizada se existir
+    setTimeout(() => {
+        if (currentAccentColor === 'custom') {
+            applyAccentColor();
+        }
+    }, 200);
+});
+
+// CSS adicional para sidebar fixada
+const additionalStyles = `
+    .sidebar-pinned {
+        position: fixed !important;
+        z-index: 60 !important;
+    }
+    
+    @media (max-width: 1024px) {
+        .sidebar-pinned {
+            transform: translateX(0) !important;
+        }
+    }
+`;
+
+// Adicionar estilos ao documento
+const styleSheet = document.createElement('style');
+styleSheet.textContent = additionalStyles;
+document.head.appendChild(styleSheet);
+

@@ -153,13 +153,19 @@
 <body class="bg-gray-50 transition-colors duration-300" id="app-body">
     <!-- Sidebar -->
     <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg sidebar-transition transform -translate-x-full lg:translate-x-0">
-        <div class="flex items-center justify-center h-16 bg-blue-600">
+        <!-- Header da Sidebar -->
+        <div class="flex items-center justify-between h-16 bg-blue-600 px-4">
             <h1 class="text-white text-lg font-bold">
                 <i class="fas fa-tools mr-2"></i>
-                Gestão OS
+                <span id="sidebar-title">Gestão OS</span>
             </h1>
+            <button onclick="toggleSidebarPin()" id="sidebar-pin-btn" class="text-white hover:text-gray-200 transition-colors lg:hidden">
+                <i class="fas fa-thumbtack"></i>
+            </button>
         </div>
-        <nav class="mt-8">
+        
+        <!-- Navegação Principal -->
+        <nav class="mt-8 flex-1">
             <a href="#" onclick="showSection('dashboard')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
                 <i class="fas fa-tachometer-alt mr-3"></i>
                 Dashboard
@@ -184,23 +190,29 @@
                 <i class="fas fa-search mr-3"></i>
                 Consulta Pública
             </a>
-            
-            <!-- Configurações -->
-            <div class="mt-8 pt-4 border-t border-gray-200">
-                <a href="#" onclick="showSection('configuracoes')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+        </nav>
+        
+        <!-- Rodapé da Sidebar com Controles -->
+        <div class="absolute bottom-0 left-0 right-0 bg-gray-50 border-t border-gray-200 p-4">
+            <div class="flex flex-col space-y-2">
+                <!-- Botão de Configurações -->
+                <button onclick="showSection('configuracoes')" class="nav-link flex items-center px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors rounded-md">
                     <i class="fas fa-cog mr-3"></i>
-                    Configurações
-                </a>
+                    <span>Configurações</span>
+                </button>
                 
                 <!-- Botão de Tema -->
-                <div class="px-6 py-3">
-                    <button onclick="toggleTheme()" class="flex items-center w-full text-gray-700 hover:text-blue-600 transition-colors">
-                        <i id="theme-icon" class="fas fa-moon mr-3"></i>
-                        <span id="theme-text">Tema Escuro</span>
-                    </button>
+                <button onclick="toggleTheme()" class="flex items-center px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors rounded-md">
+                    <i id="theme-icon" class="fas fa-moon mr-3"></i>
+                    <span id="theme-text">Tema Escuro</span>
+                </button>
+                
+                <!-- Crédito do Desenvolvedor -->
+                <div class="text-xs text-gray-500 text-center mt-2 pt-2 border-t border-gray-300">
+                    Desenvolvido por <strong>Mts Ferreira</strong>
                 </div>
             </div>
-        </nav>
+        </div>
     </div>
 
     <!-- Mobile menu button -->
@@ -215,7 +227,10 @@
         <!-- Header -->
         <header class="bg-white shadow-sm border-b">
             <div class="px-6 py-4">
-                <h2 id="page-title" class="text-2xl font-semibold text-gray-800">Dashboard</h2>
+                <h2 id="page-title" class="text-2xl font-semibold text-gray-800">
+                    <span id="dashboard-title">Dashboard</span>
+                    <span id="empresa-dashboard" class="text-lg text-gray-600 ml-2" style="display: none;"></span>
+                </h2>
             </div>
         </header>
 
@@ -434,7 +449,7 @@
                         <!-- Seletor de Cores -->
                         <div class="mb-6">
                             <label class="block text-sm font-medium text-gray-700 mb-3">Cor Principal</label>
-                            <div class="grid grid-cols-4 gap-3">
+                            <div class="grid grid-cols-4 gap-3 mb-4">
                                 <button onclick="setAccentColor('blue')" class="color-option w-12 h-12 bg-blue-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="blue"></button>
                                 <button onclick="setAccentColor('green')" class="color-option w-12 h-12 bg-green-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="green"></button>
                                 <button onclick="setAccentColor('purple')" class="color-option w-12 h-12 bg-purple-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="purple"></button>
@@ -443,6 +458,18 @@
                                 <button onclick="setAccentColor('indigo')" class="color-option w-12 h-12 bg-indigo-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="indigo"></button>
                                 <button onclick="setAccentColor('pink')" class="color-option w-12 h-12 bg-pink-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="pink"></button>
                                 <button onclick="setAccentColor('teal')" class="color-option w-12 h-12 bg-teal-600 rounded-lg border-2 border-gray-200 hover:border-gray-400 transition-colors" data-color="teal"></button>
+                            </div>
+                            
+                            <!-- Campo para cor personalizada -->
+                            <div class="mt-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Ou digite o código da cor</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="custom-color-input" placeholder="#3B82F6" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" maxlength="7">
+                                    <button onclick="aplicarCorPersonalizada()" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors">
+                                        <i class="fas fa-palette mr-1"></i>Aplicar
+                                    </button>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1">Formato: #RRGGBB (ex: #3B82F6)</p>
                             </div>
                         </div>
 
