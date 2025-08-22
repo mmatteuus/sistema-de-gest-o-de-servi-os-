@@ -1358,24 +1358,77 @@ function adjustBrightness(hex, percent) {
 
 // Função para alternar fixação da sidebar
 function toggleSidebarPin() {
+    const sidebar = document.getElementById("sidebar");
+    const pinBtn = document.getElementById("sidebar-pin-btn");
+    const mainContent = document.querySelector("main");
+
+    // Alterna o estado fixado
     sidebarPinned = !sidebarPinned;
-    localStorage.setItem('sidebarPinned', sidebarPinned.toString());
-    
-    const sidebar = document.getElementById('sidebar');
-    const pinBtn = document.getElementById('sidebar-pin-btn');
-    
+    localStorage.setItem("sidebarPinned", sidebarPinned.toString());
+
     if (sidebarPinned) {
-        sidebar.classList.add('sidebar-pinned');
-        pinBtn.classList.add('text-blue-300');
-        pinBtn.title = 'Desafixar sidebar';
-        showNotification('Sidebar fixada', 'info');
+        // Fixa a sidebar: expande e adiciona classe de fixação
+        sidebar.classList.remove("lg:translate-x-full"); // Garante que esteja expandida
+        sidebar.classList.add("sidebar-pinned");
+        pinBtn.classList.add("text-blue-300");
+        pinBtn.title = "Desafixar sidebar";
+        showNotification("Sidebar fixada", "info");
     } else {
-        sidebar.classList.remove('sidebar-pinned');
-        pinBtn.classList.remove('text-blue-300');
-        pinBtn.title = 'Fixar sidebar';
-        showNotification('Sidebar desafixada', 'info');
+        // Desafixa a sidebar: recolhe e remove classe de fixação
+        sidebar.classList.remove("sidebar-pinned");
+        sidebar.classList.add("lg:translate-x-full"); // Recolhe a sidebar
+        pinBtn.classList.remove("text-blue-300");
+        pinBtn.title = "Fixar sidebar";
+        showNotification("Sidebar desafixada", "info");
+    }
+
+    // Ajusta a margem do conteúdo principal
+    adjustMainContentMargin();
+}
+
+// Função para ajustar a margem do conteúdo principal
+function adjustMainContentMargin() {
+    const sidebar = document.getElementById("sidebar");
+    const mainContentDiv = document.querySelector(".lg\\:ml-64"); // O div que contém o header e main
+
+    if (window.innerWidth >= 1024) { // Apenas para desktop
+        if (sidebar.classList.contains("sidebar-pinned")) {
+            mainContentDiv.style.marginLeft = "256px"; // Sidebar expandida
+        } else {
+            mainContentDiv.style.marginLeft = "80px"; // Sidebar recolhida
+        }
+    } else { // Para mobile, volta ao comportamento padrão
+        mainContentDiv.style.marginLeft = "0";
     }
 }
+
+// Ajusta o estado inicial da sidebar ao carregar a página
+document.addEventListener("DOMContentLoaded", function() {
+    const sidebar = document.getElementById("sidebar");
+    const pinBtn = document.getElementById("sidebar-pin-btn");
+
+    // Se for desktop e não estiver fixada, recolhe por padrão
+    if (window.innerWidth >= 1024) {
+        if (!sidebarPinned) {
+            sidebar.classList.add("lg:translate-x-full");
+            pinBtn.classList.remove("text-blue-300");
+            pinBtn.title = "Fixar sidebar";
+        } else {
+            sidebar.classList.add("sidebar-pinned");
+            pinBtn.classList.add("text-blue-300");
+            pinBtn.title = "Desafixar sidebar";
+        }
+    } else { // Comportamento mobile padrão
+        sidebar.classList.add("-translate-x-full");
+        pinBtn.classList.remove("text-blue-300"); // Garante que o alfinete não esteja azul no mobile por padrão
+        pinBtn.title = "Fixar sidebar";
+    }
+
+    adjustMainContentMargin(); // Ajusta a margem inicial do conteúdo principal
+});
+
+// Listener para redimensionamento da janela (ajusta a margem do conteúdo principal)
+window.addEventListener("resize", adjustMainContentMargin);
 
 // Função para atualizar nome da empresa no dashboard
 function atualizarNomeEmpresaDashboard() {

@@ -8,11 +8,89 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .sidebar-transition {
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+        }
+        
+        /* Estilos para sidebar recolhida em desktop */
+        @media (min-width: 1024px) {
+            #sidebar.lg\\:translate-x-full {
+                transform: translateX(0) !important;
+                width: 80px !important; /* Largura da sidebar recolhida */
+            }
+            #sidebar.lg\\:translate-x-full .nav-text,
+            #sidebar.lg\\:translate-x-full #sidebar-title {
+                display: none;
+            }
+            #sidebar.lg\\:translate-x-full:hover {
+                transform: translateX(0) !important;
+                width: 256px !important; /* Largura da sidebar expandida no hover */
+            }
+            #sidebar.lg\\:translate-x-full:hover .nav-text,
+            #sidebar.lg\\:translate-x-full:hover #sidebar-title {
+                display: block;
+            }
+            #sidebar.sidebar-pinned.lg\\:translate-x-full {
+                transform: translateX(0) !important;
+                width: 256px !important;
+            }
+            #sidebar.sidebar-pinned.lg\\:translate-x-full .nav-text,
+            #sidebar.sidebar-pinned.lg\\:translate-x-full #sidebar-title {
+                display: block;
+            }
+            #sidebar.sidebar-pinned.lg\\:translate-x-full:hover {
+                width: 256px !important;
+            }
+            
+            /* Ajuste do conteúdo principal quando a sidebar está recolhida */
+            .lg\\:ml-64 {
+                margin-left: 80px; /* Largura da sidebar recolhida */
+            }
+            #sidebar.sidebar-pinned + .lg\\:ml-64 {
+                margin-left: 256px; /* Largura da sidebar expandida */
+            }
         }
         .card-hover:hov    <style>
         .sidebar-transition {
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+        }
+        
+        /* Estilos para sidebar recolhida em desktop */
+        @media (min-width: 1024px) {
+            #sidebar.lg\\:translate-x-full {
+                transform: translateX(0) !important;
+                width: 80px !important; /* Largura da sidebar recolhida */
+            }
+            #sidebar.lg\\:translate-x-full .nav-text,
+            #sidebar.lg\\:translate-x-full #sidebar-title {
+                display: none;
+            }
+            #sidebar.lg\\:translate-x-full:hover {
+                transform: translateX(0) !important;
+                width: 256px !important; /* Largura da sidebar expandida no hover */
+            }
+            #sidebar.lg\\:translate-x-full:hover .nav-text,
+            #sidebar.lg\\:translate-x-full:hover #sidebar-title {
+                display: block;
+            }
+            #sidebar.sidebar-pinned.lg\\:translate-x-full {
+                transform: translateX(0) !important;
+                width: 256px !important;
+            }
+            #sidebar.sidebar-pinned.lg\\:translate-x-full .nav-text,
+            #sidebar.sidebar-pinned.lg\\:translate-x-full #sidebar-title {
+                display: block;
+            }
+            #sidebar.sidebar-pinned.lg\\:translate-x-full:hover {
+                width: 256px !important;
+            }
+            
+            /* Ajuste do conteúdo principal quando a sidebar está recolhida */
+            .lg\\:ml-64 {
+                margin-left: 80px; /* Largura da sidebar recolhida */
+            }
+            #sidebar.sidebar-pinned + .lg\\:ml-64 {
+                margin-left: 256px; /* Largura da sidebar expandida */
+            }
         }
         
         .gradient-bg {
@@ -152,43 +230,43 @@
     </style></head>
 <body class="bg-gray-50 transition-colors duration-300" id="app-body">
     <!-- Sidebar -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg sidebar-transition transform -translate-x-full lg:translate-x-0">
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg sidebar-transition transform -translate-x-full lg:translate-x-full lg:w-20 lg:hover:translate-x-0">
         <!-- Header da Sidebar -->
         <div class="flex items-center justify-between h-16 bg-blue-600 px-4">
-            <h1 class="text-white text-lg font-bold">
+            <h1 class="text-white text-lg font-bold overflow-hidden whitespace-nowrap">
                 <i class="fas fa-tools mr-2"></i>
                 <span id="sidebar-title">Gestão OS</span>
             </h1>
-            <button onclick="toggleSidebarPin()" id="sidebar-pin-btn" class="text-white hover:text-gray-200 transition-colors lg:hidden">
+            <button onclick="toggleSidebarPin()" id="sidebar-pin-btn" class="text-white hover:text-gray-200 transition-colors">
                 <i class="fas fa-thumbtack"></i>
             </button>
         </div>
         
         <!-- Navegação Principal -->
         <nav class="mt-8 flex-1">
-            <a href="#" onclick="showSection('dashboard')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+            <a href="#" onclick="showSection(\'dashboard\')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
                 <i class="fas fa-tachometer-alt mr-3"></i>
-                Dashboard
+                <span class="nav-text">Dashboard</span>
             </a>
-            <a href="#" onclick="showSection('clientes')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+            <a href="#" onclick="showSection(\'clientes\')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
                 <i class="fas fa-users mr-3"></i>
-                Clientes
+                <span class="nav-text">Clientes</span>
             </a>
-            <a href="#" onclick="showSection('produtos')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+            <a href="#" onclick="showSection(\'produtos\')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
                 <i class="fas fa-box mr-3"></i>
-                Produtos
+                <span class="nav-text">Produtos</span>
             </a>
-            <a href="#" onclick="showSection('ordens')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+            <a href="#" onclick="showSection(\'ordens\')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
                 <i class="fas fa-clipboard-list mr-3"></i>
-                Ordens de Serviço
+                <span class="nav-text">Ordens de Serviço</span>
             </a>
-            <a href="#" onclick="showSection('documentos')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+            <a href="#" onclick="showSection(\'documentos\')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
                 <i class="fas fa-file-invoice mr-3"></i>
-                Documentos
+                <span class="nav-text">Documentos</span>
             </a>
-            <a href="#" onclick="showSection('consulta-publica')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+            <a href="#" onclick="showSection(\'consulta-publica\')" class="nav-link flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors">
                 <i class="fas fa-search mr-3"></i>
-                Consulta Pública
+                <span class="nav-text">Consulta Pública</span>
             </a>
         </nav>
         
@@ -196,20 +274,20 @@
         <div class="absolute bottom-0 left-0 right-0 bg-gray-50 border-t border-gray-200 p-4">
             <div class="flex flex-col space-y-2">
                 <!-- Botão de Configurações -->
-                <button onclick="showSection('configuracoes')" class="nav-link flex items-center px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors rounded-md">
+                <button onclick="showSection(\'configuracoes\')" class="nav-link flex items-center px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors rounded-md">
                     <i class="fas fa-cog mr-3"></i>
-                    <span>Configurações</span>
+                    <span class="nav-text">Configurações</span>
                 </button>
                 
                 <!-- Botão de Tema -->
                 <button onclick="toggleTheme()" class="flex items-center px-3 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors rounded-md">
                     <i id="theme-icon" class="fas fa-moon mr-3"></i>
-                    <span id="theme-text">Tema Escuro</span>
+                    <span id="theme-text" class="nav-text">Tema Escuro</span>
                 </button>
                 
                 <!-- Crédito do Desenvolvedor -->
                 <div class="text-xs text-gray-500 text-center mt-2 pt-2 border-t border-gray-300">
-                    Desenvolvido por <strong>Mts Ferreira</strong>
+                    <span class="nav-text">Desenvolvido por <strong>Mts Ferreira</strong></span>
                 </div>
             </div>
         </div>
