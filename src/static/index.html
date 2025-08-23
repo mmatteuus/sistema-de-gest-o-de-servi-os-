@@ -634,3 +634,43 @@
     <script src="app.js"></script>
 </body>
 </html>
+
+        /* Estilos para sidebar recolhida em desktop */
+        @media (min-width: 1024px) {
+            #sidebar.lg\\:translate-x-full {
+                transform: translateX(0) !important;
+                width: 80px !important; /* Largura da sidebar recolhida */
+            }
+            #sidebar.lg\\:translate-x-full .nav-text,
+            #sidebar.lg\\:translate-x-full #sidebar-title {
+                display: none;
+            }
+            #sidebar.lg\\:translate-x-full:hover {
+                transform: translateX(0) !important;
+                width: 256px !important; /* Largura da sidebar expandida no hover */
+            }
+            #sidebar.lg\\:translate-x-full:hover .nav-text,
+            #sidebar.lg\\:translate-x-full:hover #sidebar-title {
+                display: block;
+            }
+            #sidebar.sidebar-pinned.lg\\:translate-x-full {
+                transform: translateX(0) !important;
+                width: 256px !important;
+            }
+            #sidebar.sidebar-pinned.lg\\:translate-x-full .nav-text,
+            #sidebar.sidebar-pinned.lg\\:translate-x-full #sidebar-title {
+                display: block;
+            }
+            #sidebar.sidebar-pinned.lg\\:translate-x-full:hover {
+                width: 256px !important;
+            }
+            
+            /* Ajuste do conteúdo principal quando a sidebar está recolhida */
+            .lg\\:ml-64 {
+                margin-left: 80px; /* Largura da sidebar recolhida */
+            }
+            #sidebar.sidebar-pinned + .lg\\:ml-64 {
+                margin-left: 256px; /* Largura da sidebar expandida */
+            }
+        }
+
